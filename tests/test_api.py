@@ -182,3 +182,23 @@ async def test_get_reservations_success(async_client: httpx.AsyncClient, db_sess
     # Создаем резервацию
     table_response = await async_client.get("/reservations/")
     assert table_response.status_code == 200
+
+@pytest.mark.asyncio
+async def test_create_reservation_invalid_duration(async_client: httpx.AsyncClient, db_session: AsyncSession):
+    table_response = await async_client.post("/tables/", json={
+        "name": "Test Table",
+        "seats": 4,
+        "location": "зал у окна"
+    })
+    assert table_response.status_code == 201
+    table = table_response.json()
+
+    invalid_reservation = {
+        "table_id": table["id"],
+        "customer_name": "Alice",
+        "reservation_time": "2025-04-10T18:00:00",
+        "duration_minutes": -5
+    }
+    response = await async_client.post("/reservations/", json=invalid_reservation)
+    assert response.status_code == 422
+    assert "Duration must be positive" in response.text

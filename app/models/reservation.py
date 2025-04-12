@@ -14,3 +14,4 @@ class Reservation(Base):
     duration_minutes: Mapped[int] = mapped_column(Integer, nullable=False)
 
     table = relationship("Table", back_populates="reservations")
+
