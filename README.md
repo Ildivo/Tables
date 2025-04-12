@@ -184,7 +184,7 @@ docker-compose exec app alembic revision --autogenerate -m "Description"
 ## 📬 Contact
 Feel free to reach out for feedback or collaboration:
 - GitHub: [ildivo](https://github.com/Ildivo/)
-- Email: [evfincom@protonmail.com](evfincom@protonmail.com)
+- Email: evfincom@protonmail.com
 
 ---
 
