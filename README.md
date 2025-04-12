@@ -67,21 +67,34 @@ The project follows a modular architecture, includes automated tests, logging, a
 
 ## 📦 Project Structure
 ```
-tables_project/
+tables/
 ├── app/
-│   ├── main.py          # FastAPI application entry point
-│   ├── database.py      # Database configuration and session management
-│   ├── models/          # SQLModel models (Table, Reservation)
-│   ├── schemas/         # Pydantic schemas for request/response validation
-│   ├── routers/         # API route handlers
-│   └── services/        # Business logic for tables and reservations
+│   ├── __init__.py                 # Module initialization
+│   ├── main.py                     # FastAPI application entry point
+│   ├── database.py                 # Database configuration and session management
+│   ├── models/                     # SQLModel models (Table, Reservation)
+│   │   ├── __init__.py             # Module initialization
+│   │   ├── reservations.py         # Model Reservation
+│   │   ├── table.py                # Model Table
+│   ├── schemas/                    # Pydantic schemas for request/response validation
+│   │   ├── __init__.py             # Module initialization
+│   │   ├── reservations.py         # Schema Reservation
+│   │   ├── table.py                # Schema Table
+│   ├── routers/                    # API route handlers
+│   │   ├── __init__.py             # Module initialization
+│   │   ├── reservations.py         # Router Reservation
+│   │   ├── table.py                # Router Table
+│   └── services/                   # Business logic for tables and reservations
+│   │   ├── __init__.py             # Module initialization
+│   │   ├── reservations_service.py # Service Reservation
+│   │   ├── table_service.py        # Service Table
 ├── tests/
-│   └── test_api.py      # pytest tests for API endpoints
-├── alembic/             # Database migrations
-├── docker-compose.yml   # Docker services (app, postgres, tests)
-├── .gitignore           # Git ignore rules
-├── pytest.ini           # pytest configuration
-└── README.md            # Project documentation
+│   └── test_api.py                 # pytest tests for API endpoints
+├── alembic/                        # Database migrations
+├── docker-compose.yml              # Docker services (app, postgres, tests)
+├── .gitignore                      # Git ignore rules
+├── pytest.ini                      # pytest configuration
+└── README.md                       # Project documentation
 ```
 
 ---
