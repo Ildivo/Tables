@@ -191,3 +191,8 @@ Feel free to reach out for feedback or collaboration:
 *This project was developed as a test assignment to demonstrate proficiency in FastAPI, PostgreSQL, Docker, and testing. Bon appétit! 🍽️*
 
 ---
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
