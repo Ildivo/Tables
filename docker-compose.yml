@@ -1,0 +1,69 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8001:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://myuser:mypassword@postgres:5432/mydb
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./app:/app/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ["sh", "-c", "sleep 10 && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d mydb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  postgres_test:
+    image: postgres
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=mytestdb
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d mytestdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    command: ["postgres"]
+
+  test:
+    build: .
+    environment:
+      - TEST_DATABASE_URL=postgresql+asyncpg://myuser:mypassword@postgres_test:5432/mytestdb
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./tests:/app/tests
+      - ./app:/app
+    depends_on:
+      postgres_test:
+        condition: service_healthy
+    command: ["pytest", "-v", "--asyncio-mode=auto", "--log-cli-level=DEBUG", "--log-format=%(asctime)s %(levelname)s %(message)s", "tests/test_api.py"]
+
+volumes:
+  postgres_data:
+  postgres_test_data:

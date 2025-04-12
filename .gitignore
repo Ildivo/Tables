@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+
+# Docker
+*.log
+docker-compose.override.yml
+volumes/
+postgres_data/
+postgres_test_data/
+
+app/old/
+
+# IDE
+.vscode/
+.idea/
+
+# Другое
+*.bak
+*.swp
